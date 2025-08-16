@@ -1,0 +1,17 @@
+GET https://api.investing.com/api/financialdata/historical/40?start-date=2019-03-04&end-date=2025-06-16&time-frame=Daily&add-missing-rows=false
+#accept: */*
+#accept-language: en-US,en;q=0.9
+domain-id: www
+#origin: https://www.investing.com
+#priority: u=1, i
+#referer: https://www.investing.com/
+#sec-ch-ua: "Not A(Brand";v="8", "Chromium";v="132", "Google Chrome";v="132"
+#sec-ch-ua-mobile: ?1
+#sec-ch-ua-platform: "Android"
+#sec-fetch-dest: empty
+#sec-fetch-mode: cors
+#sec-fetch-site: same-site
+#user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+
+###
+
