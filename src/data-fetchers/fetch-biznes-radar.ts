@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import * as FileUtils from '../utils/file-utils';
 import * as FetchUtils from '../utils/fetch-utils';
+import * as TickerUtils from '../utils/ticker-utils';
 
 type QuarterlyFinancialRow = {
   date: string;
@@ -9,10 +10,11 @@ type QuarterlyFinancialRow = {
 
 export type BiznesRadarKindOfData = 'rachunek-zyskow-i-strat' | 'bilans';
 
-export async function fetch(ticker: string, kind: BiznesRadarKindOfData) {
-  const data = await FetchUtils.get(`https://www.biznesradar.pl/raporty-finansowe-${kind}/${ticker},Q`);
+export async function fetch(bigTicker: string, kind: BiznesRadarKindOfData) {
+  const data = await FetchUtils.get(`https://www.biznesradar.pl/raporty-finansowe-${kind}/${bigTicker},Q`);
 
-  await FileUtils.saveFile(`./data/raw-data/biznes-radar/${ticker}-${kind}.html`, data);
+  const smallTicker = TickerUtils.toSmallTicker(bigTicker)
+  await FileUtils.saveFile(`./data/raw-data/biznes-radar/${smallTicker}-${kind}.html`, data);
 
   const $ = cheerio.load(data);
 
@@ -25,7 +27,6 @@ export async function fetch(ticker: string, kind: BiznesRadarKindOfData) {
     .find('th')
     .slice(1)
     .each((_, el) => {
-      console.log(el);
       const date = $(el).text().trim().replace(/\s+/g, '').slice(0, 7);
       columns.push(date);
       rows.push({ date }); // Initialize row with date
@@ -48,5 +49,5 @@ export async function fetch(ticker: string, kind: BiznesRadarKindOfData) {
     });
 
   const result = rows.slice(0, rows.length - 1);
-  await FileUtils.saveFile(`./data/transformed-data/biznes-radar/${ticker}-${kind}.json`, result, { json: true });
+  await FileUtils.saveFile(`./data/transformed-data/biznes-radar/${smallTicker}-${kind}.json`, result, { json: true });
 }

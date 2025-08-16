@@ -1,9 +1,11 @@
 import * as FetchUtils from '../utils/fetch-utils';
 import * as CSVUtils from '../utils/csv-utils';
 import * as FileUtils from '../utils/file-utils';
+import * as TickerUtils from '../utils/ticker-utils';
 import { StooqItemsSchema } from '../types/stooq-schema';
 
-export async function fetchStooqData(ticker: string) {
+export async function fetchStooqData(bigTicker: string) {
+  const ticker = TickerUtils.toSmallTicker(bigTicker)
   const data = await FetchUtils.get('https://stooq.pl/q/d/l/', { s: ticker, i: 'd' });
   await FileUtils.saveFile(`./data/raw-data/stooq/${ticker}.csv`, data);
 
